@@ -1,10 +1,10 @@
 {
-  "uuid": "133215f0-cf20-4c05-997b-3c9be5a64e5b",
+  "uuid": "133215f0-cf20-4c05-997b-3c9be5a54d4b",
   "shortName": "LIFxPebble",
   "longName": "LIFxPebble",
   "companyName": "jorgerdz",
-  "versionCode": 1,
-  "versionLabel": "0.1",
+  "versionCode": 2,
+  "versionLabel": "0.2",
   "capabilities": [
     "configurable"
   ],
@@ -18,7 +18,7 @@
         "menuIcon": true,
         "type": "png",
         "name": "IMAGE_MENU_ICON",
-        "file": "images/lifx-logo.png"
+        "file": "images/lifx_logo.png"
       },
       {
         "type": "png",
@@ -28,7 +28,7 @@
       {
         "type": "png",
         "name": "IMAGE_TILE_SPLASH",
-        "file": "images/tile_splash.png"
+        "file": "images/lifx_logo.png"
       },
       {
         "type": "font",

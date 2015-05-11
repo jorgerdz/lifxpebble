@@ -1,13 +1,13 @@
-# project  configured on Thu Apr 16 03:50:33 2015 by
+# project  configured on Sun May 10 21:07:35 2015 by
 # waf 1.7.11 (abi 98, python 20706f0 on darwin)
 # using /Users/jorgerdz/pebble-dev/PebbleSDK-2.9/Pebble/waf configure build
 #
 ----------------------------------------
 Setting top to
-/Users/jorgerdz/Documents/Programming/CloudLIFX
+/Users/jorgerdz/Documents/Programming/lifxpebble
 ----------------------------------------
 Setting out to
-/Users/jorgerdz/Documents/Programming/CloudLIFX/build
+/Users/jorgerdz/Documents/Programming/lifxpebble/build
 ----------------------------------------
 Checking for program gcc,cc
 arm-none-eabi-gcc

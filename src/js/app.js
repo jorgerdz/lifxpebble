@@ -98,34 +98,54 @@ var options = [
     title : 'Random Color'
   },
   {
-    title : 'Restful',
-    subtitle : 'Green',
-    hex : '#8DF791'
+    title : 'White Light/White Heat',
+    subtitle : 'Neutral',
+    color : 'hue:0 saturation:0 brightness:1'
   },
   {
-    title : 'Productive',
-    subtitle : 'Blue',
-    hex : '#8997FA'
+    title : 'Western Skyline',
+    subtitle : 'Warm Brights',
+    color : 'hue:10 saturation:0.3 brightness:0.8'
   },
   {
-    title : 'Energy',
-    subtitle : 'Orange',
-    hex : '#FF7438'
+    title : 'Low Key',
+    subtitle : 'Dim & Warm',
+    color : 'hue:40 saturation:0.5 brightness:0.4'
   },
   {
-    title : 'Creative',
-    subtitle : 'Purple',
-    hex : '#8D6EFF'
+    title : 'Blue Flower/Blue Flame',
+    subtitle : 'Productive',
+    color : 'hue:200 saturation:0.3 brightness:0.9'
   },
   {
-    title : 'Calm',
-    subtitle : 'Pink',
-    hex : '#F093FA'
+    title : 'Sky Blue Sky',
+    subtitle : 'Productive',
+    color : 'hue:180 saturation:0.4 brightness:1'
   },
   {
-    title : 'Devil\'s Room',
-    subtitle : 'Red',
-    hex : '#F51D1D'
+    title : 'Pale Green Things',
+    subtitle : 'Restful',
+    color : 'hue:120 saturation:0.45 brightness:0.9'
+  },
+  {
+    title : 'Channel Orange',
+    subtitle : 'Energy',
+    color : 'hue:40 saturation:0.7 brightness:0.9'
+  },
+  {
+    title : 'Purple Rain',
+    subtitle : 'Creative',
+    color : 'hue:220 saturation:0.3 brightness:1'
+  },
+  {
+    title : 'Pink Moon',
+    subtitle : 'Calm',
+    color : 'hue:300 saturation:0.3 brightness:1'
+  },
+  {
+    title : 'Red House Painters',
+    subtitle : 'Emotionally Intense',
+    color : 'hue:360 saturation:0.8 brightness:1'
   }
 ];
 
@@ -145,7 +165,7 @@ function openOptions(bulb){
     else if(event.itemIndex == 1)
       setToRandomColor(bulb);
     else
-      setToColor(bulb, options[event.itemIndex].hex);
+      setToColor(bulb, options[event.itemIndex].color);
   });
 }
 
@@ -177,7 +197,7 @@ function setToColor(bulb, color){
     },
     type : 'json',
     data : {
-      color : color
+      color :color
     }
   }, function(json){ 
     Vibe.vibrate('short');

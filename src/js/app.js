@@ -14,77 +14,7 @@ var UI = require('ui')
     Vibe = require('ui/vibe'),
     Settings = require('settings');
 
-Settings.config(
-  { url: 'http://jorgerdz.github.io/lifxpebble/' },
-  function(e) {
-    // Show the parsed response
-    Settings.data('token', e.options.token);
-
-    // Show the raw response if parsing failed
-    if (e.failed) {
-      console.log(e.response);
-    }
-  }
-);
-
-init();
- 
-//Load bulbs, display "loading" card
-function init(){
-  if(!Settings.data('token'))
-    noToken();
-  else{
-    token = Settings.data('token');
-    splashCard = new UI.Card({
-      title: "Please Wait",
-      body: "Loading LIFX Bulbs..."
-    });
-    splashCard.show();
-    lookForBulbs();
-  }
-}
-
-function noToken(){
-  splashCard = new UI.Card({
-    title: "No Token",
-    body: "You need to enter your token under the app configuration in your Pebble app."
-  });
-  splashCard.show();
-}
-
-//Look for available bulbs, display them
-function lookForBulbs(){
-  //var auth = btoa() ?  
-  ajax({
-    url : api + '/lights/all/',
-    method : 'GET',
-    headers: {
-     authorization : 'Basic ' + base64_encode(token + ':' + '')
-    },
-    type : 'json'
-  }, function(bulbs){
-    bulbs.unshift({ label : 'All'});
-
-    bulbs.forEach(function(data){
-      data.title = data.label,
-      data.subtitle = ""
-    });
-    bulbsMenu = new UI.Menu({
-    sections: [{
-        title: 'Available Lights',
-        items: bulbs
-      }]
-    });
-    splashCard.hide();
-    bulbsMenu.show();
-
-    bulbsMenu.on('select', function(event) {
-      openOptions(bulbs[event.itemIndex].title);
-    });
-  }, function(error){
-    showError();
-  });
-}
+var url = 'http://jorgerdz.github.io/lifxpebble?';
 
 var options = [
   {
@@ -94,8 +24,8 @@ var options = [
     title : 'Random Color'
   },
   {
-    title : 'White Light/White Heat',
-    subtitle : 'Neutral',
+    title : 'White Light',
+    subtitle : 'White Heat',
     color : 'hue:0 saturation:0 brightness:1'
   },
   {
@@ -145,6 +75,104 @@ var options = [
   }
 ];
 
+if(Settings.data('opt').token){
+  url += 'token='+Settings.data('opt').token+'&';
+}
+
+if(Settings.data('opt').default){
+  url += 'default='+Settings.data('opt').default;
+}
+
+Settings.config(
+  { url: url },
+  function(e) {
+    if(e.options.token)
+      Settings.data('opt', e.options);
+
+    if(Settings.data('opt').default){
+      openDefaultBulb();
+    } else {
+      var opt = {token : Settings.data('opt').token,
+                default : null};
+      Settings.data('opt', opt);
+      init();
+    }
+
+    // Show the raw response if parsing failed
+    if (e.failed) {
+      console.log(e.response);
+    }
+  }
+);
+
+init();
+ 
+//Load bulbs, display "loading" card
+function init(){
+  if(!Settings.data('opt').token){
+    noToken();
+  }
+  else if(Settings.data('opt').default){
+    openDefaultBulb();
+  }
+  else {
+    token = Settings.data('opt').token;
+    splashCard = new UI.Card({
+      title: "Please Wait",
+      body: "Loading LIFX Bulbs..."
+    });
+    splashCard.show();
+    lookForBulbs();
+  }
+};
+
+function openDefaultBulb(){
+  token = Settings.data('opt').token;
+  openOptions(Settings.data('opt').default);
+};
+
+function noToken(){
+  splashCard = new UI.Card({
+    title: "No Token",
+    body: "You need to enter your token under the app configuration in your Pebble app."
+  });
+  splashCard.show();
+}
+
+//Look for available bulbs, display them
+function lookForBulbs(){
+  //var auth = btoa() ?  
+  ajax({
+    url : api + '/lights/all/',
+    method : 'GET',
+    headers: {
+     authorization : 'Basic ' + base64_encode(token + ':' + '')
+    },
+    type : 'json'
+  }, function(bulbs){
+    bulbs.unshift({ label : 'All'});
+
+    bulbs.forEach(function(data){
+      data.title = data.label,
+      data.subtitle = ""
+    });
+    bulbsMenu = new UI.Menu({
+    sections: [{
+        title: 'Available Lights',
+        items: bulbs
+      }]
+    });
+    splashCard.hide();
+    bulbsMenu.show();
+
+    bulbsMenu.on('select', function(event) {
+      openOptions(bulbs[event.itemIndex].title);
+    });
+  }, function(error){
+    showError();
+  });
+};
+
 function openOptions(bulb){
   var optionsMenu = new UI.Menu({
     sections: [{
@@ -152,7 +180,10 @@ function openOptions(bulb){
         items: options
     }]
   });
-  bulbsMenu.hide();
+
+  if(bulbsMenu)
+    bulbsMenu.hide();
+
   optionsMenu.show();
 
   optionsMenu.on('select', function(event){

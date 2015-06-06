@@ -11,14 +11,25 @@
 				<h4>CloudLIFX</h4>
 			</div>
 		</div>
+		<hr>
 		<div class="row">
 			<div class="col-xs-12">
 				<label>LIFX Token:</label>
 				<input type="text" class="form-control" placeholder="Your Cloud LIFX Token" id="token"></input>
-				<p>You can generate your token at <a href="http://cloud.lifx.com">cloud.lifx.com</p>
-				<button id="save" class="btn btn-default">Save</button>
+				<p>You can generate your token at <a href="http://cloud.lifx.com">cloud.lifx.com</a></p>
 			</div>
 		</div>
+		<hr>
+		<div class="row">
+			<div class="col-xs-12">
+				<label>Default Bulb:</label>
+				<input type="text" class="form-control" placeholder="Default Bulb Label" id="default"></input>
+				<p>If you only use one bulb you can set its label here to bypass the list bulb selection. Otherwise leave it empty to always use the list.</p>
+			</div>
+		</div>
+		<hr>
+		<button id="save" class="btn btn-default">Save</button>
+
 </body>
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -27,8 +38,10 @@
 		event.preventDefault();
 		var options = {};
 		if($('#token').val().length > 0)
-			options = { token : $('#token').val() }
-			document.location = 'pebblejs://close#' + encodeURIComponent(JSON.stringify(options));
+			options.token = $('#token').val();
+		if($('#default').val().length > 0)
+			options.default = $('#default').val();
+		document.location = 'pebblejs://close#' + encodeURIComponent(JSON.stringify(options));
 	});
 
 	$.urlParam = function(name){
@@ -42,7 +55,14 @@
 	}
 
 	var token = $.urlParam('token');
+	var defaultBulb = $.urlParam('default');
+
 	if(token)
 		$('#token').val(token);
+
+	if(defaultBulb)
+		$('#default').val(defaultBulb);
+
+
 </script>
 </html>

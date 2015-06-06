@@ -17,10 +17,6 @@ var UI = require('ui')
 Settings.config(
   { url: 'http://jorgerdz.github.io/lifxpebble/' },
   function(e) {
-    // Reset color to red before opening the webview
-    Settings.option('color', 'red');
-  },
-  function(e) {
     // Show the parsed response
     Settings.data('token', e.options.token);
 

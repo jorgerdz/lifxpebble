@@ -75,26 +75,31 @@ var options = [
   }
 ];
 
-if(Settings.data('opt').token){
-  url += 'token='+Settings.data('opt').token+'&';
-}
 
-if(Settings.data('opt').default){
-  url += 'default='+Settings.data('opt').default;
+if(Settings.option('opt')){
+  if(Settings.option('opt').token){
+    url += 'token='+Settings.option('opt').token+'&';
+  }
+
+  if(Settings.option('opt').default){
+    url += 'default='+Settings.option('opt').default;
+  }
+}else if(Settings.data('token')){
+  Settings.option('opt', {token : Settings.data('token'), default : null});
 }
 
 Settings.config(
   { url: url },
   function(e) {
     if(e.options.token)
-      Settings.data('opt', e.options);
+      Settings.option('opt', e.options);
 
-    if(Settings.data('opt').default){
+    if(Settings.option('opt') && Settings.option('opt').default){
       openDefaultBulb();
     } else {
-      var opt = {token : Settings.data('opt').token,
+      var opt = {token : Settings.option('opt').token,
                 default : null};
-      Settings.data('opt', opt);
+      Settings.option('opt', opt);
       init();
     }
 
@@ -109,14 +114,14 @@ init();
  
 //Load bulbs, display "loading" card
 function init(){
-  if(!Settings.data('opt').token){
+  if(!Settings.option('opt') || !Settings.option('opt').token){
     noToken();
   }
-  else if(Settings.data('opt').default){
+  else if(Settings.option('opt') && Settings.option('opt').default){
     openDefaultBulb();
   }
   else {
-    token = Settings.data('opt').token;
+    token = Settings.option('opt').token;
     splashCard = new UI.Card({
       title: "Please Wait",
       body: "Loading LIFX Bulbs..."
@@ -127,8 +132,8 @@ function init(){
 };
 
 function openDefaultBulb(){
-  token = Settings.data('opt').token;
-  openOptions(Settings.data('opt').default);
+  token = Settings.option('opt').token;
+  openOptions(Settings.option('opt').default);
 };
 
 function noToken(){
@@ -229,6 +234,7 @@ function setToColor(bulb, color){
   }, function(json){ 
     Vibe.vibrate('short');
   }, function(error){
+    console.log(JSON.stringify(error))
     showError();
   });
 }

@@ -241,7 +241,7 @@ function getSelector(bulb){
 function showError(){
   splashCard = new UI.Card({
     title: "Error",
-    body: "Something went wrong, make sure your token is correct under the configuration."
+    body: "Something went wrong, make sure your token is correct under the configuration and your selected bulb is online."
   });
   splashCard.show();
 }

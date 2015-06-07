@@ -22,14 +22,15 @@
       },
       {
         "type": "png",
-        "name": "IMAGE_LOGO_SPLASH",
-        "file": "images/lifx-logo.png"
-      },
-      {
-        "type": "png",
         "name": "IMAGE_TILE_SPLASH",
         "file": "images/lifx_logo.png"
       },
+      {
+        "type": "png",
+        "name": "IMAGE_LOGO_SPLASH",
+        "file": "images/lifx_logo_big.png"
+      },
+      
       {
         "type": "font",
         "name": "MONO_FONT_14",

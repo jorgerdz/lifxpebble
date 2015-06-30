@@ -202,8 +202,9 @@ function openOptions(bulb){
 }
 
 function toggleBulb(bulb){
+  var url = api + '/lights/'+getSelector(bulb)+'/toggle';
   ajax({
-    url : api + '/lights/'+getSelector(bulb)+'/toggle',
+    url : encodeURI(url),
     method : 'POST',
     headers: {
      authorization : 'Basic ' + base64_encode(token + ':' + '')
@@ -221,8 +222,9 @@ function setToRandomColor(bulb){
 }
 
 function setToColor(bulb, color){
+  var url = api + '/lights/'+getSelector(bulb)+'/color';
   ajax({
-    url : api + '/lights/'+getSelector(bulb)+'/color',
+    url : encodeURI(url),
     method : 'PUT',
     headers: {
      authorization : 'Basic ' + base64_encode(token + ':' + '')

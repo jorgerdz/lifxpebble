@@ -144,6 +144,12 @@ function noToken(){
   splashCard.show();
 }
 
+function uniq(a) {
+  return a.sort().filter(function(item, pos, ary) {
+      return !pos || item != ary[pos - 1];
+  });
+}
+
 //Look for available bulbs, display them
 function lookForBulbs(){
   //var auth = btoa() ?  
@@ -155,12 +161,24 @@ function lookForBulbs(){
     },
     type : 'json'
   }, function(bulbs){
-    bulbs.unshift({ label : 'All'});
+    var groups = [];
 
     bulbs.forEach(function(data){
-      data.title = data.label,
-      data.subtitle = ""
+      data.title = data.label;
+      data.subtitle = 'Single Bulb';
+      data.type = 'single';
+      groups.push(data.group.name);
     });
+
+    groups = uniq(groups);
+
+    groups.forEach(function(data){
+      data.title = data;
+      bulbs.unshift({title : data, subtitle : 'Group', type : 'group'});
+    });
+
+    bulbs.unshift({ title : 'All', type : 'all'});
+
     bulbsMenu = new UI.Menu({
     sections: [{
         title: 'Available Lights',
@@ -171,7 +189,7 @@ function lookForBulbs(){
     bulbsMenu.show();
 
     bulbsMenu.on('select', function(event) {
-      openOptions(bulbs[event.itemIndex].title);
+      openOptions(bulbs[event.itemIndex]);
     });
   }, function(error){
     showError();
@@ -181,7 +199,7 @@ function lookForBulbs(){
 function openOptions(bulb){
   var optionsMenu = new UI.Menu({
     sections: [{
-        title: bulb,
+        title: bulb.title,
         items: options
     }]
   });
@@ -236,14 +254,19 @@ function setToColor(bulb, color){
   }, function(json){ 
     Vibe.vibrate('short');
   }, function(error){
-    console.log(JSON.stringify(error))
     showError();
   });
 }
 
 function getSelector(bulb){
-  return (bulb.toLowerCase() == 'all' ? 'all' : 'label:'+bulb);
-
+  switch(bulb.type){
+    case 'all':
+      return 'all';
+    case 'single':
+      return 'label:'+bulb.title;
+    case 'group':
+      return 'group:'+bulb.title;
+  }
 }
 
 function showError(){
@@ -260,7 +283,6 @@ function getRandomColor() {
   for (var i = 0; i < 6; i++ ) {
       color += letters[Math.floor(Math.random() * 16)];
   }
-  console.log(color)
   return color;
 }
 

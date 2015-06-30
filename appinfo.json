@@ -3,8 +3,8 @@
   "shortName": "LIFxPebble",
   "longName": "LIFxPebble",
   "companyName": "jorgerdz",
-  "versionCode": 4,
-  "versionLabel": "0.4",
+  "versionCode": 5,
+  "versionLabel": "0.5",
   "capabilities": [
     "configurable"
   ],

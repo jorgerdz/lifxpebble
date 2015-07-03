@@ -12,7 +12,8 @@ var UI = require('ui')
     splashCard = '',
     bulbsMenu = '',
     Vibe = require('ui/vibe'),
-    Settings = require('settings');
+    Settings = require('settings'),
+    bulbs = {};
 
 var url = 'http://jorgerdz.github.io/lifxpebble?';
 
@@ -160,8 +161,9 @@ function lookForBulbs(){
      authorization : 'Basic ' + base64_encode(token + ':' + '')
     },
     type : 'json'
-  }, function(bulbs){
+  }, function(response){
     var groups = [];
+    bulbs = response;
 
     bulbs.forEach(function(data){
       data.title = data.label;
@@ -236,7 +238,13 @@ function toggleBulb(bulb){
 }
 
 function setToRandomColor(bulb){
-  setToColor(bulb, getRandomColor());
+  if(bulb.type == 'group'){
+    bulbs.forEach(function(b){
+      if(b.group && b.group.name == bulb.title)
+        setToColor(b, getRandomColor());
+    });
+  } else
+    setToColor(bulb, getRandomColor());
 }
 
 function setToColor(bulb, color){
